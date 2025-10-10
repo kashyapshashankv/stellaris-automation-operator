@@ -1,10 +1,18 @@
 ---
 
-name: Devel
+name: main
 
 on:
-  push:
-    branches: [devel]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Stellaris Automation Operator version.'
+        required: true
+        default: ''
+      confirm:
+        description: 'Are you sure? Set this to yes.'
+        required: true
+        default: 'no'
 
 jobs:
   release:
@@ -13,36 +21,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fail if QUAY_REGISTRY not set
-        run: |
-          if [[ -z "${{ vars.QUAY_REGISTRY }}" ]]; then
-            echo "QUAY_REGISTRY not set. Please set QUAY_REGISTRY in variable GitHub Actions variables."
-            exit 1
-          fi
-
-      - name: Log into registry ghcr.io
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567    # v3.3.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-
       - name: Log into registry quay.io
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567    # v3.3.0
         with:
-          registry: ${{ vars.QUAY_REGISTRY }}
-          username: ${{ secrets.QUAY_USER }}
-          password: ${{ secrets.QUAY_TOKEN }}
+          registry: quay.io
+          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_PASSWORD }}
 
 
       - name: Build and Store Image @ghcr
         run: |
-          IMG=ghcr.io/${{ github.repository }}:${{ github.sha }} make docker-buildx
+          IMG=quay.io/stellaris/stellaris-automation-operator:${{ github.event.inputs.version }} make docker-buildx
 
-
-      - name: Publish Image to quay.io
-        run: |
-          docker buildx imagetools create \
-            ghcr.io/${{ github.repository }}:${{ github.sha }} \
-            --tag ${{ vars.QUAY_REGISTRY }}/awx-operator:devel

@@ -1,4 +1,4 @@
-FROM quay.io/operator-framework/ansible-operator:v1.36.1
+FROM quay.io/operator-framework/ansible-operator:v1.41.0
 
 USER root
 RUN dnf update --security --bugfix -y && \

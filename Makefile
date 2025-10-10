@@ -32,7 +32,7 @@ BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 #
 # For example, running 'make bundle-build bundle-push catalog-build catalog-push' will build and push both
 # ansible.com/awx-operator-bundle:$VERSION and ansible.com/awx-operator-catalog:$VERSION.
-IMAGE_TAG_BASE ?= quay.io/ansible/awx-operator
+IMAGE_TAG_BASE ?= quay.io/stellaris/stellaris-automation-operator 
 
 # BUNDLE_IMG defines the image:tag used for the bundle.
 # You can use it as an arg. (E.g make bundle-build BUNDLE_IMG=<some-registry>/<project-name-bundle>:<tag>)
@@ -145,7 +145,7 @@ ifeq (,$(shell which kustomize 2>/dev/null))
 	@{ \
 	set -e ;\
 	mkdir -p $(dir $(KUSTOMIZE)) ;\
-	curl -sSLo - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.0.1/kustomize_v5.0.1_$(OS)_$(ARCHA).tar.gz | \
+	curl -sSLo - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.7.1/kustomize_v5.7.1_$(OS)_$(ARCHA).tar.gz | \
 	tar xzf - -C bin/ ;\
 	}
 else
@@ -161,7 +161,7 @@ ifeq (,$(shell which operator-sdk 2>/dev/null))
 	@{ \
 	set -e ;\
 	mkdir -p $(dir $(OPERATOR_SDK)) ;\
-	curl -sSLo $(OPERATOR_SDK) https://github.com/operator-framework/operator-sdk/releases/download/v1.36.1/operator-sdk_$(OS)_$(ARCHA) ;\
+	curl -sSLo $(OPERATOR_SDK) https://github.com/operator-framework/operator-sdk/releases/download/v1.41.1/operator-sdk_$(OS)_$(ARCHA) ;\
 	chmod +x $(OPERATOR_SDK) ;\
 	}
 else
@@ -177,7 +177,7 @@ ifeq (,$(shell which ansible-operator 2>/dev/null))
 	@{ \
 	set -e ;\
 	mkdir -p $(dir $(ANSIBLE_OPERATOR)) ;\
-	curl -sSLo $(ANSIBLE_OPERATOR) https://github.com/operator-framework/ansible-operator-plugins/releases/download/v1.36.1/ansible-operator_$(OS)_$(ARCHA) ;\
+	curl -sSLo $(ANSIBLE_OPERATOR) https://github.com/operator-framework/ansible-operator-plugins/releases/download/v1.41.1/ansible-operator_$(OS)_$(ARCHA) ;\
 	chmod +x $(ANSIBLE_OPERATOR) ;\
 	}
 else
@@ -208,7 +208,7 @@ ifeq (,$(shell which opm 2>/dev/null))
 	@{ \
 	set -e ;\
 	mkdir -p $(dir $(OPM)) ;\
-	curl -sSLo $(OPM) https://github.com/operator-framework/operator-registry/releases/download/v1.26.0/$(OS)-$(ARCHA)-opm ;\
+	curl -sSLo $(OPM) https://github.com/operator-framework/operator-registry/releases/download/v1.60.0/$(OS)-$(ARCHA)-opm ;\
 	chmod +x $(OPM) ;\
 	}
 else
