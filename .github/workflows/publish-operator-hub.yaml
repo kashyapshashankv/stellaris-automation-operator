@@ -54,12 +54,12 @@ jobs:
           echo ${{ secrets.QUAY_TOKEN }} | docker login ${{ env.IMAGE_REGISTRY }} -u ${{ secrets.QUAY_USER }} --password-stdin
 
       - name: Checkout awx-operator at workflow branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: awx-operator
 
       - name: Checkout awx-opearator at ${{ env.VERSION }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-tags: true
           ref: ${{ env.VERSION }}
